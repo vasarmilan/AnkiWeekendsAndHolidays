@@ -4,7 +4,11 @@ Do you want to take a break from doing your Anki reviews without having them pil
 
 It works by re-scheduling the already scheduled cards anytime by moving them either before, or after the specified days. By default, the intervals never change by more than 10\%.
 
+## Images
+Before using the add-on reschedule:
 ![Before](https://raw.githubusercontent.com/vasarmilan/AnkiWeekendsAndHolidays/master/static/before.png)
+
+After:
 ![After](https://raw.githubusercontent.com/vasarmilan/AnkiWeekendsAndHolidays/master/static/after.png)
 ## Usage and configuration
 
