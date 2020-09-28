@@ -1,1 +1,1 @@
-{"name": "Move Reviews from Weekends and Holidays", "mod": 1}
+{"name": "Move Reviews from Weekends and Holidays", "mod": 1, "config": {"dates": ["1970-01-01"], "execute_at_startup": 1, "max_change_days": 7, "max_change_percent": 10, "max_days_lookahead": 365, "shortcut": "Ctrl+Shift+r", "weekdays_skip": [5, 6]}}

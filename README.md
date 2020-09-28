@@ -6,9 +6,9 @@ It works by re-scheduling the already scheduled cards anytime by moving them eit
 
 ## Mobile and other addons
 
-This add-on plays well with mobile versions of Anki (AnkiMobile/AnkiDroid), assuming that the user also uses the desktop version, as the 
+This add-on plays well with mobile versions of Anki (AnkiMobile/AnkiDroid), assuming that the user also uses the desktop version, as the cards scheduled on mobile will be moved away from the specified days when the rescheduling is run (with _Ctrl+Shift+r_), or at every startup if run at startup is chosen at configuration options.
 
-The add-on does not directly impact the scheduler, but instead reschedules already schedules cards, so it should play well with addons that patch the scheduler (for example, load balancer), but this is untested.
+The add-on does not directly modify the scheduler, but instead reschedules already schedules cards, so it should play well with addons that patch the scheduler (for example, load balancer), *but this is untested*.
 
 ## Images
 Before using the add-on reschedule:
