@@ -2,7 +2,7 @@
 
 Do you want to take a break from doing your Anki reviews without having them pile up on the weekends, holidays or a vacation? Or do you have specific days on the week when you're too busy to do the reviews? Then this add-on is the solution to your problem!
 
-It works by re-scheduling the already scheduled cards anytime by moving them either before, or after the specified days. By default, the intervals never change by more than 10\%.
+It works by re-scheduling the already scheduled cards anytime by moving them either before, or after the specified days. By default, the intervals never change by more than 10\%, or by 7 days in any case.
 
 ## Images
 Before using the add-on reschedule:

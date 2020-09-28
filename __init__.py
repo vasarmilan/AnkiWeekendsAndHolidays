@@ -3,20 +3,14 @@ from aqt import mw
 from aqt.qt import QAction, QKeySequence
 from aqt.utils import showInfo
 # from functools import lru_cache
-# from aqt import gui_hooks
-
-# global keywords are in functions, because in Anki REPL I cannot
-# debug functions without them for some reason.
-
-# TODO make this anki config!
 
 # config = {
-#     'weekdays_skip':  [5, 6],
-#     'dates': ["2020-09-30"],
-#     'max_days': 365,
-#     'max_change_percent': 10,
-#     # 'execute_at_startup': 0,
-#     'shortcut': 'Ctrl+Shift+r'
+#     "weekdays_skip":  [5, 6],
+#     "dates": ["1970-01-01"],
+#     "max_days_lookahead": 365,
+#     "max_change_days": 7,
+#     "max_change_percent": 10,
+#     "shortcut": "Ctrl+Shift+r"
 #     }
 
 config = mw.addonManager.getConfig(__name__)
@@ -29,7 +23,7 @@ def due_to_date(due):
 def dues_to_skip_relative():
     # global config, datetime, due_to_date
     res = list()
-    for t in range(config['max_days']):
+    for t in range(config['max_days_lookahead']):
         if due_to_date(t).weekday() in config['weekdays_skip']:
             res.append(t)
         elif due_to_date(t).isoformat() in config['dates']:
@@ -61,7 +55,10 @@ def cards_to_reschedule():
     return res
 
 def _possible_relative_days(day, ivl, days_to_skip):
-    max_diff = int(ivl*config['max_change_percent']/100)
+    max_diff = int(min([
+        config['max_change_days'] or 7,
+        ivl*config['max_change_percent']/100
+    ]))
     min_day = day - max_diff
     max_day = day + max_diff
     res = list()
@@ -123,5 +120,16 @@ if config['shortcut']:
 mw.form.menuTools.addAction(action)
 
 
-# if config.get('execute_at_startup'):
-#     gui_hooks.main_window_did_init.append(reschedule_all_cards)
+if config.get('execute_at_startup'):
+    try:
+        from aqt import gui_hooks
+        gui_hooks.profile_did_open.append(reschedule_all_cards)
+    except Exception:
+        try:
+            from anki.hooks import addHook
+            addHook("profileLoaded", reschedule_all_cards)
+        except Exception:
+            showInfo("""Automatic rescheduling failed: incompatible version
+                     If you keep seeing this message, please submit a bug report at:
+                     https://github.com/vasarmilan/AnkiWeekendsAndHolidays
+            """)
