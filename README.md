@@ -4,8 +4,8 @@ Do you want to take a break from doing your Anki reviews without having them pil
 
 It works by re-scheduling the already scheduled cards anytime by moving them either before, or after the specified days. By default, the intervals never change by more than 10\%.
 
-TODO insert before-after here!
-
+![Before](https://raw.githubusercontent.com/vasarmilan/AnkiWeekendsAndHolidays/master/static/before.png)
+![After](https://raw.githubusercontent.com/vasarmilan/AnkiWeekendsAndHolidays/master/static/after.png)
 ## Usage and configuration
 
 By default, the add-on will free up the weekends and nothing else. However, this behaviour can be changed to move the reviews away from specific dates and/or any day of the week.
