@@ -2,26 +2,17 @@ import datetime
 from aqt import mw
 from aqt.qt import QAction, QKeySequence
 from aqt.utils import showInfo
-# from functools import lru_cache
-
-# config = {
-#     "weekdays_skip":  [5, 6],
-#     "dates": ["1970-01-01"],
-#     "max_days_lookahead": 365,
-#     "max_change_days": 7,
-#     "max_change_percent": 10,
-#     "shortcut": "Ctrl+Shift+r"
-#     }
 
 config = mw.addonManager.getConfig(__name__)
+
 
 def due_to_date(due):
     # global datetime
     day = (datetime.datetime.now() + datetime.timedelta(days=due)).date()
     return day
 
+
 def dues_to_skip_relative():
-    # global config, datetime, due_to_date
     res = list()
     for t in range(config['max_days_lookahead']):
         if due_to_date(t).weekday() in config['weekdays_skip']:
@@ -31,11 +22,7 @@ def dues_to_skip_relative():
     return res
 
 
-# db = mw.col.db
-# col = mw.col
-
 def dues_to_skip():
-    # global col, dues_to_skip_relative
     today = mw.col.sched.today
     return [
         t + today for t in dues_to_skip_relative()
@@ -43,16 +30,15 @@ def dues_to_skip():
 
 
 def cards_to_reschedule():
-    # global dues_to_skip, db
     to_skip = dues_to_skip()
     res = []
     for t in to_skip:
         # does n queries, would probably be better with a single one, but
         # there is no trivial way to do it.
         res += mw.col.db.list(
-             "SELECT id FROM cards WHERE due = ? ORDER BY due ASC",
-              t)
+             "SELECT id FROM cards WHERE due = ? ORDER BY due ASC", t)
     return res
+
 
 def _possible_relative_days(day, ivl, days_to_skip):
     max_diff = int(min([
@@ -69,8 +55,6 @@ def _possible_relative_days(day, ivl, days_to_skip):
 
 
 def best_relative_day(day, ivl, days_to_skip=None):
-    # global due_to_skip_relative, cards_due_on_relative_day,\
-    #     _possible_relative_days
     days_to_skip = days_to_skip or dues_to_skip_relative()
     possible_relative_days = _possible_relative_days(
         day, ivl, days_to_skip)
@@ -80,19 +64,20 @@ def best_relative_day(day, ivl, days_to_skip=None):
     min_index = cards_due_nums.index(min_)
     return possible_relative_days[min_index]
 
+
 def cards_due_on_relative_day(day):
-    # global col
     due = mw.col.sched.today + day
     return mw.col.db.list(
         "SELECT COUNT(*) FROM cards WHERE due = ?",
         due)[0]
 
+
 def reschedule_card(card_id, days_to_skip=None):
-    # global col, best_relative_day
     card = mw.col.getCard(card_id)
     relative_due = card.due - mw.col.sched.today
     try:
-        best_relative_due = best_relative_day(relative_due, card.ivl, days_to_skip)
+        best_relative_due = best_relative_day(relative_due, card.ivl,
+                                              days_to_skip)
     # ValueError when no possible date to reschedule,
     # then leave at original due date.
     except ValueError:
@@ -102,8 +87,8 @@ def reschedule_card(card_id, days_to_skip=None):
     card.flush()
     return True
 
+
 def reschedule_all_cards():
-    # global cards_to_reschedule, dues_to_skip_relative, reschedule_card
     days_to_skip = dues_to_skip_relative()
     card_ids = cards_to_reschedule()
     for card_id in card_ids:
@@ -130,6 +115,5 @@ if config.get('execute_at_startup'):
             addHook("profileLoaded", reschedule_all_cards)
         except Exception:
             showInfo("""Automatic rescheduling failed: incompatible version
-                     If you keep seeing this message, please submit a bug report at:
-                     https://github.com/vasarmilan/AnkiWeekendsAndHolidays
-            """)
+                     If you see this message, please consider submitting a bug report at:
+                     https://github.com/vasarmilan/AnkiWeekendsAndHolidays""")
