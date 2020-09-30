@@ -6,9 +6,13 @@ from aqt.utils import showInfo
 config = mw.addonManager.getConfig(__name__)
 
 
+def today_date():
+    return datetime.datetime.fromtimestamp(
+        mw.col.crt + mw.col.sched.today*86400).date()
+
 def due_to_date(due):
     # global datetime
-    day = (datetime.datetime.now() + datetime.timedelta(days=due)).date()
+    day = today_date() + datetime.timedelta(days=due)
     return day
 
 
