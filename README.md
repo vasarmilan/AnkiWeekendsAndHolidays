@@ -1,3 +1,5 @@
+[Get the addon for your Anki from here](https://ankiweb.net/shared/info/1222550498)
+
 # Move Reviews from Weekends and Holidays
 
 Do you want to take a break from doing your Anki reviews without having them pile up on the weekends, holidays or a vacation? Or do you have specific days on the week when you're too busy to do the reviews? Then this add-on is the solution to your problem!
